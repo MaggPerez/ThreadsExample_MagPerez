@@ -48,7 +48,16 @@ fun TimerScreen(
             contentAlignment = Alignment.Center
         ) {
             if (timerViewModel.isRunning) {
-
+                val progress = if (timerViewModel.totalMillis > 0) {
+                    timerViewModel.remainingMillis.toFloat() / timerViewModel.totalMillis.toFloat()
+                } else {
+                    0f
+                }
+                CircularProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier.size(280.dp),
+                    strokeWidth = 10.dp,
+                )
             }
             Text(
                 text = timerText(timerViewModel.remainingMillis),

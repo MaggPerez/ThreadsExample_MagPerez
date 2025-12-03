@@ -34,6 +34,10 @@ class TimerViewModel : ViewModel() {
     var isRunning by mutableStateOf(false)
         private set
 
+    // Flag to track when timer reaches 0
+    var timerFinished by mutableStateOf(false)
+        private set
+
     fun selectTime(hour: Int, min: Int, sec: Int) {
         selectedHour = hour
         selectedMinute = min
@@ -48,6 +52,7 @@ class TimerViewModel : ViewModel() {
         if (totalMillis > 0) {
             isRunning = true
             remainingMillis = totalMillis
+            timerFinished = false
 
             timerJob = viewModelScope.launch {
                 while (remainingMillis > 0) {
@@ -56,8 +61,13 @@ class TimerViewModel : ViewModel() {
                 }
 
                 isRunning = false
+                timerFinished = true
             }
         }
+    }
+
+    fun resetTimerFinished() {
+        timerFinished = false
     }
 
     fun cancelTimer() {

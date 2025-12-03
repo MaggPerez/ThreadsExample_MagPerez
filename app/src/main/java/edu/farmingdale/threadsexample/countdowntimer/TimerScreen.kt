@@ -1,7 +1,10 @@
 package edu.farmingdale.threadsexample.countdowntimer
 
+import android.media.MediaPlayer
+import android.media.RingtoneManager
 import android.util.Log
 import android.widget.NumberPicker
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -40,6 +43,27 @@ fun TimerScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+
+    // Play sound when timer finishes
+    LaunchedEffect(timerViewModel.timerFinished) {
+        if (timerViewModel.timerFinished) {
+            try {
+                val notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val mediaPlayer = MediaPlayer.create(context, notificationUri)
+                mediaPlayer?.apply {
+                    setOnCompletionListener {
+                        it.release()
+                    }
+                    start()
+                }
+            } catch (e: Exception) {
+                Log.e("TimerScreen", "Error playing sound: ${e.message}")
+            }
+            timerViewModel.resetTimerFinished()
+        }
+    }
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = modifier

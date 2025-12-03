@@ -71,11 +71,20 @@ fun TimerScreen(
             onTimePick = timerViewModel::selectTime
         )
         if (timerViewModel.isRunning) {
-            Button(
-                onClick = timerViewModel::cancelTimer,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = modifier.padding(50.dp)
             ) {
-                Text("Cancel")
+                Button(
+                    onClick = timerViewModel::cancelTimer
+                ) {
+                    Text("Cancel")
+                }
+                Button(
+                    onClick = timerViewModel::resetTimer
+                ) {
+                    Text("Reset")
+                }
             }
         } else {
             Button(

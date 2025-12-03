@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,9 +84,12 @@ fun TimerScreen(
                     strokeWidth = 10.dp,
                 )
             }
+            val isLastTenSeconds = timerViewModel.remainingMillis in 1..10000
             Text(
                 text = timerText(timerViewModel.remainingMillis),
-                fontSize = 60.sp,
+                fontSize = 56.sp,
+                color = if (isLastTenSeconds) Color.Red else Color.Unspecified,
+                fontWeight = if (isLastTenSeconds) FontWeight.Bold else FontWeight.Normal
             )
         }
         TimePicker(
